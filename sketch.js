@@ -66,8 +66,16 @@ function mouseClicked(){
     stroke(255, 255, 255);
     rWidth = p2x - p1x;
     rHeight = p2y - p1y;
-    if (())
-    rect(p1x, p1y, (p2x - p1x), (p2y - p1y));
+    if ((rHeight/rWidth) > (windowHeight/windowWidth)){
+        rect(p1x, p1y, ((windowWidth/windowHeight)*rHeight), rHeight);
+    }
+    else if((rHeight/rWidth) < (windowHeight/windowWidth)){
+        rect(p1x, p1y, rWidth, ((windowHeight/windowWidth)*rWidth));
+    }
+    else{
+        rect(p1x, p1y, rWidth, rHeight);
+    }
+
 }
 
 function draw() {
