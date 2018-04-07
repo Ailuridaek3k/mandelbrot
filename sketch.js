@@ -17,8 +17,6 @@ var cntr = 0;
 var p1x;
 var p1y;
 
-var mbCanvas;
-
 function pixelToComplex(x, y) {
   imag = (y / windowHeight) * actual_height_range + actual_height_offset;
   real = (x / windowWidth) * actual_width_range + actual_width_offset;
@@ -26,15 +24,11 @@ function pixelToComplex(x, y) {
 }
 
 function setup() {
-  pixelDensity(1);
-  colorMode(HSB);
   createCanvas(windowWidth, windowHeight);
   // normally draw is called continuously
   // but this sucks for this case, because (a) our draw is expensive
   // (b) it does the same thing every time
   noLoop();
-  mbCanvas = createGraphics(windowWidth, windowHeight);
-  drawMandelbrot(mbCanvas);
 }
 
 function windowResized() {
@@ -84,26 +78,22 @@ function mouseClicked(){
 
 }
 
-function drawMandelbrot(g){
-    for (var x = 0; x < windowWidth; x++) {
-        for (var y = 0; y < windowHeight; y++) {
-            //console.log([x,y])
-            var pxAsComplex = pixelToComplex(x, y);
-            //var inMandelbrot = pxAsComplex.abs() < 2; 
-            var inMandelbrot = nonDivergentMandelbrotIteration(pxAsComplex);
-            //stroke(255*(inMandelbrot/max_iterations));
-            g.colorMode(HSB);
-            var color1 = color(25, 100, 50);
-            var color2 = color(332, 100, 63);
-            var trueColor = lerpColor(color1, color2, (inMandelbrot/max_iterations))
-            g.stroke(trueColor);
-            g.point(x,y);
-        }
-    }
-}
-
 function draw() {
-    background(51);
-    point(10, 10);
-    image(mbCanvas, 0, 0, windowWidth, windowHeight);
+  background(51);
+  point(10, 10);
+  for (var x = 0; x < windowWidth; x++) {
+    for (var y = 0; y < windowHeight; y++) {
+      //console.log([x,y])
+      var pxAsComplex = pixelToComplex(x, y);
+      //var inMandelbrot = pxAsComplex.abs() < 2; 
+      var inMandelbrot = nonDivergentMandelbrotIteration(pxAsComplex);
+      //stroke(255*(inMandelbrot/max_iterations));
+      colorMode(HSB);
+      var color1 = color(25, 100, 50);
+      var color2 = color(332, 100, 63);
+      var trueColor = lerpColor(color1, color2, (inMandelbrot/max_iterations))
+      stroke(trueColor);
+      point(x,y);
+    }
+  }
 }
