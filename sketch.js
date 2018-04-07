@@ -12,6 +12,11 @@ var actual_width_offset = -2;
 var divergence_threshold = 2
 var max_iterations = 23;
 
+//rectangle drawing vars
+var cntr = 0;
+var p1x;
+var p1y;
+
 function pixelToComplex(x, y) {
   imag = (y / windowHeight) * actual_height_range + actual_height_offset;
   real = (x / windowWidth) * actual_width_range + actual_width_offset;
@@ -42,6 +47,27 @@ function nonDivergentMandelbrotIteration(c) {
   
   // if didn't hit max iterations, this is divergent not non-divergent
   return num_iterations;
+}
+
+function mouseClicked(){
+  if (cntr == 0){
+    p1x = mouseX;
+    p1y = mouseY;
+    colorMode(RGB);
+    stroke(255, 255, 255);
+    point(p1x, p1y);
+    cntr++;
+  }
+  else if(cntr == 1){
+    var p2x = mouseX;
+    var p2y = mouseY;
+    strokeWeight(3);
+    noFill();
+    colorMode(RGB);
+    stroke(255, 255, 255);
+    rect(p1x, p1y, (p2x - p1x), (p2y - p1y));
+    cntr = 0;
+  }
 }
 
 function draw() {
