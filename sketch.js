@@ -49,25 +49,25 @@ function nonDivergentMandelbrotIteration(c) {
   return num_iterations;
 }
 
-function mouseClicked(){
-  if (cntr == 0){
+function mousePressed(){
     p1x = mouseX;
     p1y = mouseY;
     colorMode(RGB);
     stroke(255, 255, 255);
     point(p1x, p1y);
     cntr++;
-  }
-  else if(cntr == 1){
+}
+function mouseClicked(){
     var p2x = mouseX;
     var p2y = mouseY;
     strokeWeight(3);
     noFill();
     colorMode(RGB);
     stroke(255, 255, 255);
+    rWidth = p2x - p1x;
+    rHeight = p2y - p1y;
+    if (())
     rect(p1x, p1y, (p2x - p1x), (p2y - p1y));
-    cntr = 0;
-  }
 }
 
 function draw() {
