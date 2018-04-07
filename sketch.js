@@ -10,7 +10,7 @@ var actual_width_range = 3
 var actual_width_offset = -2;
 
 var divergence_threshold = 2
-var max_iterations = 100;
+var max_iterations = 23;
 
 function pixelToComplex(x, y) {
   imag = (y / windowHeight) * actual_height_range + actual_height_offset;
@@ -41,12 +41,11 @@ function nonDivergentMandelbrotIteration(c) {
   }
   
   // if didn't hit max iterations, this is divergent not non-divergent
-  return num_iterations < max_iterations;
+  return num_iterations;
 }
 
 function draw() {
   background(51);
-  stroke(255);
   point(10, 10);
   for (var x = 0; x < windowWidth; x++) {
     for (var y = 0; y < windowHeight; y++) {
@@ -54,9 +53,8 @@ function draw() {
       var pxAsComplex = pixelToComplex(x, y);
       //var inMandelbrot = pxAsComplex.abs() < 2; 
       var inMandelbrot = nonDivergentMandelbrotIteration(pxAsComplex);
-      if(inMandelbrot) {
-        point(x,y)
-      }
+      stroke(255*(inMandelbrot/max_iterations));
+      point(x,y);
     }
   }
 }
