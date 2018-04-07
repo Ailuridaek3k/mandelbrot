@@ -53,7 +53,12 @@ function draw() {
       var pxAsComplex = pixelToComplex(x, y);
       //var inMandelbrot = pxAsComplex.abs() < 2; 
       var inMandelbrot = nonDivergentMandelbrotIteration(pxAsComplex);
-      stroke(255*(inMandelbrot/max_iterations));
+      //stroke(255*(inMandelbrot/max_iterations));
+      colorMode(HSB);
+      var color1 = color(25, 100, 50);
+      var color2 = color(332, 100, 63);
+      var trueColor = lerpColor(color1, color2, (inMandelbrot/max_iterations))
+      stroke(trueColor);
       point(x,y);
     }
   }
