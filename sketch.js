@@ -16,6 +16,8 @@ var max_iterations = 23;
 var cntr = 0;
 var p1x;
 var p1y;
+var p2x;
+var p2y;
 
 var mbCanvas;
 
@@ -32,7 +34,7 @@ function setup() {
   // normally draw is called continuously
   // but this sucks for this case, because (a) our draw is expensive
   // (b) it does the same thing every time
-  noLoop();
+  //noLoop();
   mbCanvas = createGraphics(windowWidth, windowHeight);
   drawMandelbrot(mbCanvas);
 }
@@ -62,26 +64,16 @@ function mousePressed(){
     stroke(255, 255, 255);
     point(p1x, p1y);
     cntr++;
+    
 }
-function mouseClicked(){
-    var p2x = mouseX;
-    var p2y = mouseY;
-    strokeWeight(3);
-    noFill();
-    colorMode(RGB);
-    stroke(255, 255, 255);
-    rWidth = p2x - p1x;
-    rHeight = p2y - p1y;
-    if ((rHeight/rWidth) > (windowHeight/windowWidth)){
-        rect(p1x, p1y, ((windowWidth/windowHeight)*rHeight), rHeight);
-    }
-    else if((rHeight/rWidth) < (windowHeight/windowWidth)){
-        rect(p1x, p1y, rWidth, ((windowHeight/windowWidth)*rWidth));
-    }
-    else{
-        rect(p1x, p1y, rWidth, rHeight);
-    }
 
+function mouseDragged(){
+    p2x = mouseX;
+    p2y = mouseY;
+}
+
+function mouseClicked(){
+    
 }
 
 function drawMandelbrot(g){
@@ -106,4 +98,23 @@ function draw() {
     background(51);
     point(10, 10);
     image(mbCanvas, 0, 0, windowWidth, windowHeight);
+    
+    strokeWeight(3);
+    noFill();
+    colorMode(RGB);
+    stroke(255, 255, 255);
+    rWidth = p2x - p1x;
+    rHeight = p2y - p1y;
+    
+    if (rHeight < rWidth){
+        var cutWidth = (((windowWidth/windowHeight)*math.abs(rHeight))*(rWidth/math.abs(rWidth)));
+        rect(p1x, p1y, cutWidth, rHeight);
+    }
+    else if(rHeight > rWidth){
+        var cutHeight = (((windowWidth/windowHeight)*math.abs(rWidth))*(rHeight/math.abs(rHeight)));
+        rect(p1x, p1y, rWidth, cutHeight);
+    }
+    else{
+        rect(p1x, p1y, rWidth, rHeight);
+    }
 }
