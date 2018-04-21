@@ -13,11 +13,13 @@ var divergence_threshold = 2
 var max_iterations = 23;
 
 //rectangle drawing vars
-var cntr = 0;
 var p1x;
 var p1y;
 var p2x;
 var p2y;
+
+var addWidth;
+var addHeight;
 
 var mbCanvas;
 
@@ -63,8 +65,6 @@ function mousePressed(){
     colorMode(RGB);
     stroke(255, 255, 255);
     point(p1x, p1y);
-    cntr++;
-    
 }
 
 function mouseDragged(){
@@ -73,7 +73,13 @@ function mouseDragged(){
 }
 
 function mouseClicked(){
-    
+    var cropStart = pixelToComplex(p1x, p1y);
+    var cropEnd = pixelToComplex(p1x + addWidth, p2y + addHeight);
+    actual_height_offset = cropStart.im;
+    actual_height_range = cropEnd.im - cropStart.im;
+    actual_width_offset = cropStart.re;
+    actual_width_range = cropEnd.re - cropStart.re;
+    drawMandelbrot(mbCanvas);
 }
 
 function drawMandelbrot(g){
@@ -110,21 +116,9 @@ function draw() {
     boxRatio = boxDiag/screenDiag;
     wSign = rWidth/math.abs(rWidth);
     hSign = rHeight/math.abs(rHeight);
+    addWidth =  (windowWidth * boxRatio * wSign);
+    addHeight = (windowHeight * boxRatio * hSign);
     rect(p1x, p1y, 
-         (windowWidth * boxRatio * wSign), 
-         (windowHeight * boxRatio * hSign));
-    /*
-    if (math.abs(rHeight) < math.abs(rWidth)){
-        var sign = rWidth/math.abs(rWidth);
-        var cutWidth = ((boxRatio*math.abs(rHeight))*(sign));
-        rect(p1x, p1y, cutWidth, rHeight);
-    }
-    else if(math.abs(rHeight) > math.abs(rWidth)){
-        var sign = rHeight/math.abs(rHeight);
-        var cutHeight = ((math.abs(rWidth)/boxRatio)*sign);
-        rect(p1x, p1y, rWidth, cutHeight);
-    }
-    else{
-        rect(p1x, p1y, rWidth, rHeight);
-    }*/
+         addWidth, 
+         addHeight);
 }
