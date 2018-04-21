@@ -105,16 +105,26 @@ function draw() {
     stroke(255, 255, 255);
     rWidth = p2x - p1x;
     rHeight = p2y - p1y;
-    
-    if (rHeight < rWidth){
-        var cutWidth = (((windowWidth/windowHeight)*math.abs(rHeight))*(rWidth/math.abs(rWidth)));
+    boxDiag = Math.sqrt((math.pow(rHeight, 2)) + (math.pow(rWidth, 2)));
+    screenDiag = Math.sqrt((math.pow(windowHeight, 2)) + (math.pow(windowWidth, 2)));
+    boxRatio = boxDiag/screenDiag;
+    wSign = rWidth/math.abs(rWidth);
+    hSign = rHeight/math.abs(rHeight);
+    rect(p1x, p1y, 
+         (windowWidth * boxRatio * wSign), 
+         (windowHeight * boxRatio * hSign));
+    /*
+    if (math.abs(rHeight) < math.abs(rWidth)){
+        var sign = rWidth/math.abs(rWidth);
+        var cutWidth = ((boxRatio*math.abs(rHeight))*(sign));
         rect(p1x, p1y, cutWidth, rHeight);
     }
-    else if(rHeight > rWidth){
-        var cutHeight = (((windowWidth/windowHeight)*math.abs(rWidth))*(rHeight/math.abs(rHeight)));
+    else if(math.abs(rHeight) > math.abs(rWidth)){
+        var sign = rHeight/math.abs(rHeight);
+        var cutHeight = ((math.abs(rWidth)/boxRatio)*sign);
         rect(p1x, p1y, rWidth, cutHeight);
     }
     else{
         rect(p1x, p1y, rWidth, rHeight);
-    }
+    }*/
 }
