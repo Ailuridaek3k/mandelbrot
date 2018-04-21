@@ -23,6 +23,11 @@ var addHeight;
 
 var mbCanvas;
 
+
+var storedX;
+var storedY;
+
+
 function pixelToComplex(x, y) {
   imag = (y / windowHeight) * actual_height_range + actual_height_offset;
   real = (x / windowWidth) * actual_width_range + actual_width_offset;
@@ -74,11 +79,12 @@ function mouseDragged(){
 
 function mouseClicked(){
     var cropStart = pixelToComplex(p1x, p1y);
-    var cropEnd = pixelToComplex(p1x + addWidth, p2y + addHeight);
+    var cropEnd = pixelToComplex(p1x + addWidth, p1y + addHeight);
     actual_height_offset = cropStart.im;
     actual_height_range = cropEnd.im - cropStart.im;
     actual_width_offset = cropStart.re;
     actual_width_range = cropEnd.re - cropStart.re;
+    mbCanvas.clear();
     drawMandelbrot(mbCanvas);
 }
 
@@ -96,6 +102,10 @@ function drawMandelbrot(g){
             var trueColor = lerpColor(color1, color2, (inMandelbrot/max_iterations))
             g.stroke(trueColor);
             g.point(x,y);
+            /*
+            if(mouseX === storedX && mouseY === storedY){
+                console.log(mbCanvas.get(mouseX, mouseY), pixelToComplex(mouseX, mouseY));
+            }*/
         }
     }
 }
@@ -104,9 +114,13 @@ function draw() {
     background(51);
     point(10, 10);
     image(mbCanvas, 0, 0, windowWidth, windowHeight);
-    
     strokeWeight(3);
     noFill();
+    if(keyIsPressed === true){
+        storedX = mouseX;
+        storedY = mouseY;
+        console.log(mbCanvas.get(mouseX, mouseY), pixelToComplex(mouseX, mouseY));
+    }
     colorMode(RGB);
     stroke(255, 255, 255);
     rWidth = p2x - p1x;
