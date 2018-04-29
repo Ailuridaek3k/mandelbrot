@@ -93,14 +93,24 @@ function mouseClicked(){
     var yCoords = [p1y, p2y];
     xCoords.sort();
     yCoords.sort();
+    //console.log(xCoord[0]);
+   // console.log(yCoord[0]);
     var cropStart = pixelToComplex(xCoords[0], yCoords[0]);
     var cropEnd = pixelToComplex(xCoords[1], yCoords[1]);
+    //console.log(cropStart);
+    //console.log(cropEnd);
     actual_height_offset = cropStart.im;
     actual_height_range = cropEnd.im - cropStart.im;
     actual_width_offset = cropStart.re;
     actual_width_range = cropEnd.re - cropStart.re;
     mbCanvas.clear();
     drawMandelbrot(mbCanvas);
+    p2x = null;
+    p2y = null;
+    p1x = null;
+    p1y = null;
+    addHeight = null;
+    addWidth = null;
 }
 
 function drawMandelbrot(g){
