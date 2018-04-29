@@ -75,11 +75,26 @@ function mousePressed(){
 function mouseDragged(){
     p2x = mouseX;
     p2y = mouseY;
+    rWidth = p2x - p1x;
+    rHeight = p2y - p1y;
+    boxDiag = Math.sqrt((math.pow(rHeight, 2)) + (math.pow(rWidth, 2)));
+    screenDiag = Math.sqrt((math.pow(windowHeight, 2)) + (math.pow(windowWidth, 2)));
+    boxRatio = boxDiag/screenDiag;
+    wSign = rWidth/math.abs(rWidth);
+    hSign = rHeight/math.abs(rHeight);
+    addWidth =  (windowWidth * boxRatio * wSign);
+    addHeight = (windowHeight * boxRatio * hSign);
+    p2x = p1x + addWidth;
+    p2y = p1y + addHeight;
 }
 
 function mouseClicked(){
-    var cropStart = pixelToComplex(p1x, p1y);
-    var cropEnd = pixelToComplex(p1x + addWidth, p1y + addHeight);
+    var xCoords = [p1x, p2x];
+    var yCoords = [p1y, p2y];
+    xCoords.sort();
+    yCoords.sort();
+    var cropStart = pixelToComplex(xCoords[0], yCoords[0]);
+    var cropEnd = pixelToComplex(xCoords[1], yCoords[1]);
     actual_height_offset = cropStart.im;
     actual_height_range = cropEnd.im - cropStart.im;
     actual_width_offset = cropStart.re;
@@ -123,16 +138,16 @@ function draw() {
     }
     colorMode(RGB);
     stroke(255, 255, 255);
-    rWidth = p2x - p1x;
-    rHeight = p2y - p1y;
-    boxDiag = Math.sqrt((math.pow(rHeight, 2)) + (math.pow(rWidth, 2)));
-    screenDiag = Math.sqrt((math.pow(windowHeight, 2)) + (math.pow(windowWidth, 2)));
-    boxRatio = boxDiag/screenDiag;
-    wSign = rWidth/math.abs(rWidth);
-    hSign = rHeight/math.abs(rHeight);
-    addWidth =  (windowWidth * boxRatio * wSign);
-    addHeight = (windowHeight * boxRatio * hSign);
     rect(p1x, p1y, 
          addWidth, 
          addHeight);
+}
+
+try {
+  module.exports = {
+    nonDivergentMandelbrotIteration,
+    drawMandelbrot
+  };
+} catch (error){
+  console.log(error)
 }
