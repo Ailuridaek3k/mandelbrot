@@ -27,6 +27,8 @@ var mbCanvas;
 var storedX;
 var storedY;
 
+var color1;
+var color2;
 
 function pixelToComplex(x, y) {
   imag = (y / windowHeight) * actual_height_range + actual_height_offset;
@@ -37,6 +39,9 @@ function pixelToComplex(x, y) {
 function setup() {
   pixelDensity(1);
   colorMode(HSB);
+  color1 = color('hsb(25, 100%, 50%)');
+  color2 = color('hsb(332, 100%, 63%)');
+  blendMode(REPLACE);
   createCanvas(windowWidth, windowHeight);
   // normally draw is called continuously
   // but this sucks for this case, because (a) our draw is expensive
@@ -93,12 +98,8 @@ function mouseClicked(){
     var yCoords = [p1y, p2y];
     xCoords.sort();
     yCoords.sort();
-    //console.log(xCoord[0]);
-   // console.log(yCoord[0]);
     var cropStart = pixelToComplex(xCoords[0], yCoords[0]);
     var cropEnd = pixelToComplex(xCoords[1], yCoords[1]);
-    //console.log(cropStart);
-    //console.log(cropEnd);
     actual_height_offset = cropStart.im;
     actual_height_range = cropEnd.im - cropStart.im;
     actual_width_offset = cropStart.re;
@@ -116,16 +117,14 @@ function mouseClicked(){
 function drawMandelbrot(g){
     for (var x = 0; x < windowWidth; x++) {
         for (var y = 0; y < windowHeight; y++) {
-            //console.log([x,y])
             var pxAsComplex = pixelToComplex(x, y);
-            //var inMandelbrot = pxAsComplex.abs() < 2; 
             var inMandelbrot = nonDivergentMandelbrotIteration(pxAsComplex);
-            //stroke(255*(inMandelbrot/max_iterations));
-            g.colorMode(HSB);
-            var color1 = color(25, 100, 50);
-            var color2 = color(332, 100, 63);
-            var trueColor = lerpColor(color1, color2, (inMandelbrot/max_iterations))
+            var trueColor = lerpColor(color1, color2, (inMandelbrot/max_iterations));  
             g.stroke(trueColor);
+            var refRe = -0.7707736389684814;
+            var refIm = -0.1662269129287599;
+            var delta =  0.01;
+            //var referencePoint = (pxAsComplex.re >= (refRe - delta) && pxAsComplex.re <= (refRe + delta)) && (pxAsComplex.im >= (refIm - delta) && pxAsComplex.im <= (refIm + delta));
             g.point(x,y);
             /*
             if(mouseX === storedX && mouseY === storedY){
@@ -139,14 +138,13 @@ function draw() {
     background(51);
     point(10, 10);
     image(mbCanvas, 0, 0, windowWidth, windowHeight);
-    strokeWeight(3);
+    strokeWeight(1.5);
     noFill();
-    if(keyIsPressed === true){
+    /*if(keyIsPressed === true){
         storedX = mouseX;
         storedY = mouseY;
         console.log(mbCanvas.get(mouseX, mouseY), pixelToComplex(mouseX, mouseY));
-    }
-    colorMode(RGB);
+    }*/
     stroke(255, 255, 255);
     rect(p1x, p1y, 
          addWidth, 
