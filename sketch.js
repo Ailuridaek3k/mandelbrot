@@ -72,8 +72,7 @@ function nonDivergentMandelbrotIteration(c) {
 function mousePressed(){
     p1x = mouseX;
     p1y = mouseY;
-    colorMode(RGB);
-    stroke(255, 255, 255);
+    stroke(0, 100, 100);
     point(p1x, p1y);
 }
 
@@ -121,15 +120,7 @@ function drawMandelbrot(g){
             var inMandelbrot = nonDivergentMandelbrotIteration(pxAsComplex);
             var trueColor = lerpColor(color1, color2, (inMandelbrot/max_iterations));  
             g.stroke(trueColor);
-            var refRe = -0.7707736389684814;
-            var refIm = -0.1662269129287599;
-            var delta =  0.01;
-            //var referencePoint = (pxAsComplex.re >= (refRe - delta) && pxAsComplex.re <= (refRe + delta)) && (pxAsComplex.im >= (refIm - delta) && pxAsComplex.im <= (refIm + delta));
             g.point(x,y);
-            /*
-            if(mouseX === storedX && mouseY === storedY){
-                console.log(mbCanvas.get(mouseX, mouseY), pixelToComplex(mouseX, mouseY));
-            }*/
         }
     }
 }
@@ -145,7 +136,7 @@ function draw() {
         storedY = mouseY;
         console.log(mbCanvas.get(mouseX, mouseY), pixelToComplex(mouseX, mouseY));
     }*/
-    stroke(255, 255, 255);
+    stroke(0, 100, 100);
     rect(p1x, p1y, 
          addWidth, 
          addHeight);
