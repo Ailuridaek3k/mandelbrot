@@ -30,6 +30,9 @@ var storedY;
 var color1;
 var color2;
 
+var c1;
+var c2;
+var but;
 
 function pixelToComplex(x, y) {
   imag = (y / windowHeight) * actual_height_range + actual_height_offset;
@@ -40,8 +43,16 @@ function pixelToComplex(x, y) {
 function setup() {
   pixelDensity(1);
   colorMode(HSB);
-  color1 = color('hsb(25, 100%, 50%)');
-  color2 = color('hsb(332, 100%, 63%)');
+  color1 = color('hsb(25, 100%, 50%)'); //FF6A00
+  color2 = color('hsb(332, 100%, 63%)'); //FF429A
+  c1 = select('#color1');
+  c1.changed(selectEvent1);
+  c2 = select('#color2');
+  c2.changed(selectEvent2);
+  redrawBut = select('#redraw');
+  redrawBut.mouseClicked(redrawButtonEvent);
+  resetBut = select('#reset');
+  resetBut.changed(resetButtonEvent);    
   boxColor = color('hsb(0, 100%, 100%)');
   blendMode(REPLACE);
   createCanvas(windowWidth, windowHeight);
@@ -56,6 +67,24 @@ function setup() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+}
+
+function selectEvent1(){
+    color1 = color(c1.value());
+}
+
+function selectEvent2(){
+    color2 = color(c2.value());
+}
+
+function redrawButtonEvent(){
+    drawMandelbrot(mbCanvas);
+    alert("redraw");
+    return false;
+}
+
+function resetButtonEvent(){
+    drawMandelbrot(mbCanvas);
 }
 
 function nonDivergentMandelbrotIteration(c) {
@@ -95,6 +124,9 @@ function mouseDragged(){
 }
 
 function mouseClicked(){
+    if(!p1x || !p2x || !p1y || !p2y){
+        return;
+    }
     var xCoords = [p1x, p2x];
     var yCoords = [p1y, p2y];
     xCoords.sort(math.subtract);
