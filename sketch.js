@@ -30,6 +30,7 @@ var storedY;
 var color1;
 var color2;
 
+
 function pixelToComplex(x, y) {
   imag = (y / windowHeight) * actual_height_range + actual_height_offset;
   real = (x / windowWidth) * actual_width_range + actual_width_offset;
@@ -41,8 +42,10 @@ function setup() {
   colorMode(HSB);
   color1 = color('hsb(25, 100%, 50%)');
   color2 = color('hsb(332, 100%, 63%)');
+  boxColor = color('hsb(0, 100%, 100%)');
   blendMode(REPLACE);
   createCanvas(windowWidth, windowHeight);
+  stroke(255);
   // normally draw is called continuously
   // but this sucks for this case, because (a) our draw is expensive
   // (b) it does the same thing every time
@@ -72,8 +75,6 @@ function nonDivergentMandelbrotIteration(c) {
 function mousePressed(){
     p1x = mouseX;
     p1y = mouseY;
-    stroke(0, 100, 100);
-    point(p1x, p1y);
 }
 
 function mouseDragged(){
@@ -86,6 +87,7 @@ function mouseDragged(){
     boxRatio = boxDiag/screenDiag;
     wSign = rWidth/math.abs(rWidth);
     hSign = rHeight/math.abs(rHeight);
+    //the signs are so that addW and addH keep the signs of the height and width
     addWidth =  (windowWidth * boxRatio * wSign);
     addHeight = (windowHeight * boxRatio * hSign);
     p2x = p1x + addWidth;
@@ -95,14 +97,16 @@ function mouseDragged(){
 function mouseClicked(){
     var xCoords = [p1x, p2x];
     var yCoords = [p1y, p2y];
-    xCoords.sort();
-    yCoords.sort();
+    xCoords.sort(math.subtract);
+    yCoords.sort(math.subtract);
     var cropStart = pixelToComplex(xCoords[0], yCoords[0]);
     var cropEnd = pixelToComplex(xCoords[1], yCoords[1]);
     actual_height_offset = cropStart.im;
     actual_height_range = cropEnd.im - cropStart.im;
+    console.assert(actual_height_range > 0);
     actual_width_offset = cropStart.re;
     actual_width_range = cropEnd.re - cropStart.re;
+    console.assert(actual_width_range > 0);
     mbCanvas.clear();
     drawMandelbrot(mbCanvas);
     p2x = null;
@@ -126,8 +130,6 @@ function drawMandelbrot(g){
 }
 
 function draw() {
-    background(51);
-    point(10, 10);
     image(mbCanvas, 0, 0, windowWidth, windowHeight);
     strokeWeight(1.5);
     noFill();
@@ -136,7 +138,6 @@ function draw() {
         storedY = mouseY;
         console.log(mbCanvas.get(mouseX, mouseY), pixelToComplex(mouseX, mouseY));
     }*/
-    stroke(0, 100, 100);
     rect(p1x, p1y, 
          addWidth, 
          addHeight);
