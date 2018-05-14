@@ -53,6 +53,8 @@ function setup() {
   redrawBut.mouseClicked(redrawButtonEvent);
   resetBut = select('#reset');
   resetBut.changed(resetButtonEvent);    
+  switchBut = select('#switch');
+  switchBut.changed(switchButtonEvent);
   boxColor = color('hsb(0, 100%, 100%)');
   blendMode(REPLACE);
   createCanvas(windowWidth, windowHeight);
@@ -79,12 +81,23 @@ function selectEvent2(){
 
 function redrawButtonEvent(){
     drawMandelbrot(mbCanvas);
-    alert("redraw");
+    alert("REDRAWING...");
     return false;
 }
 
 function resetButtonEvent(){
     drawMandelbrot(mbCanvas);
+}
+
+function switchButtonEvent(){
+    alert("SWAPPING COLORS...");    
+    swapColor1 = color(color1.value());
+    swapColor2 = color(color2.value());
+    color1 = color(swapColor2.value());
+    color2 = color(swapColor1.value());
+    drawMandelbrot(mbCanvas);
+    alert("REDRAWING...");
+    return false;
 }
 
 function nonDivergentMandelbrotIteration(c) {
