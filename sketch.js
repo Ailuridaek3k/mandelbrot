@@ -93,6 +93,8 @@ function switchButtonEvent(){
     color1 = color(color2);
     color2 = color(swapColor);
     drawMandelbrot(mbCanvas);
+    c1.value(color1.toString('#rrggbb'));
+    c2.value(color2.toString('#rrggbb'));
     return false;
 }
 
