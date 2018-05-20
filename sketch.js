@@ -43,12 +43,12 @@ function pixelToComplex(x, y) {
 function setup() {
   pixelDensity(1);
   colorMode(HSB);
-  color1 = color('hsb(25, 100%, 50%)'); //FF6A00
-  color2 = color('hsb(332, 100%, 63%)'); //FF429A
   c1 = select('#color1');
   c1.changed(selectEvent1);
   c2 = select('#color2');
   c2.changed(selectEvent2);
+  selectEvent1();
+  selectEvent2();
   redrawBut = select('#redraw');
   redrawBut.mouseClicked(redrawButtonEvent);
   resetBut = select('#reset');
